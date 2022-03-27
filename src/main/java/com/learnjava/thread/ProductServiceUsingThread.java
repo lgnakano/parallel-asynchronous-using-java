@@ -11,8 +11,8 @@ import static com.learnjava.util.CommonUtil.stopWatch;
 import static com.learnjava.util.LoggerUtil.log;
 
 public class ProductServiceUsingThread {
-    private ProductInfoService productInfoService;
-    private ReviewService reviewService;
+    private final ProductInfoService productInfoService;
+    private final ReviewService reviewService;
 
     public ProductServiceUsingThread(ProductInfoService productInfoService, ReviewService reviewService) {
         this.productInfoService = productInfoService;
@@ -55,7 +55,7 @@ public class ProductServiceUsingThread {
     private class ProductInfoRunnable implements Runnable {
         @Getter
         private ProductInfo productInfo;
-        private String productId;
+        private final String productId;
         public ProductInfoRunnable(String productId) {
             this.productId = productId;
         }
@@ -70,7 +70,7 @@ public class ProductServiceUsingThread {
     private class ReviewRunnable implements Runnable {
         @Getter
         private Review review;
-        private String productId;
+        private final String productId;
 
         public ReviewRunnable(String productId) {
             this.productId = productId;
