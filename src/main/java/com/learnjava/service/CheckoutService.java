@@ -8,8 +8,7 @@ import com.learnjava.domain.checkout.CheckoutStatus;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.learnjava.util.CommonUtil.startTimer;
-import static com.learnjava.util.CommonUtil.timeTaken;
+import static com.learnjava.util.CommonUtil.*;
 
 public class CheckoutService {
 
@@ -22,20 +21,19 @@ public class CheckoutService {
         startTimer();
 
         List<CartItem> priceValidationList = cart.getCartItemList()
-                .stream()
-                .map(cartItem -> {
+                .parallelStream()
+                .peek(cartItem -> {
                     boolean isPriceInvalid = priceValidatorService.isCartItemInvalid(cartItem);
                     cartItem.setExpired(isPriceInvalid);
-                    return cartItem;
                 })
                 .filter(CartItem::isExpired)
                 .collect(Collectors.toList());
+        timeTaken();
+        stopWatchReset();
         if (!priceValidationList.isEmpty()) {
-            timeTaken();
             return new CheckoutResponse(CheckoutStatus.FAILURE, priceValidationList);
         }
         else {
-            timeTaken();
             return new CheckoutResponse(CheckoutStatus.SUCCESS);
         }
     }
