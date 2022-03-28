@@ -13,9 +13,11 @@ public class ParallelStreamsExample {
 
     public List<String> stringTransform(List<String> namesList) {
         return namesList
-                .stream()
-                .parallel()
+                .parallelStream()
                 .map(this::addNameLengthTransform)
+//                .peek(System.out::println)
+//                .sequential()
+//                .parallel()
                 .collect(Collectors.toList());
     }
     public static void main(String[] args) {
