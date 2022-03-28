@@ -16,8 +16,8 @@ public class ProductServiceUsingExecutor {
 
     static ExecutorService executorService = Executors.newFixedThreadPool(
             Runtime.getRuntime().availableProcessors() );
-    private ProductInfoService productInfoService;
-    private ReviewService reviewService;
+    private final ProductInfoService productInfoService;
+    private final ReviewService reviewService;
 
     public ProductServiceUsingExecutor(ProductInfoService productInfoService, ReviewService reviewService) {
         this.productInfoService = productInfoService;
