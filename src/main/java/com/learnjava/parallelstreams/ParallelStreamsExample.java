@@ -11,23 +11,24 @@ import static com.learnjava.util.LoggerUtil.log;
 
 public class ParallelStreamsExample {
 
-    public static List<String> stringTransform(List<String> namesList) {
+    public List<String> stringTransform(List<String> namesList) {
         return namesList
                 .stream()
                 .parallel()
-                .map(ParallelStreamsExample::addNameLengthTransform)
+                .map(this::addNameLengthTransform)
                 .collect(Collectors.toList());
     }
     public static void main(String[] args) {
+        ParallelStreamsExample parallelStreamsExample = new ParallelStreamsExample();
         stopWatch.start();
         List<String> namesList = DataSet.namesList();
-        List<String> resultList = ParallelStreamsExample.stringTransform(namesList);
+        List<String> resultList = parallelStreamsExample.stringTransform(namesList);
         stopWatch.stop();
         log("Total Time Taken : "+ stopWatch.getTime());
         log("Final Result : "+ resultList);
 
     }
-    private static String addNameLengthTransform(String name) {
+    public String addNameLengthTransform(String name) {
         delay(500);
         return name.length()+" - "+name ;
     }
