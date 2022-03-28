@@ -4,6 +4,7 @@ import com.learnjava.util.DataSet;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.learnjava.util.CommonUtil.delay;
 import static com.learnjava.util.CommonUtil.stopWatch;
@@ -14,6 +15,19 @@ public class ParallelStreamsExample {
     public List<String> stringTransform(List<String> namesList) {
         return namesList
                 .parallelStream()
+                .map(this::addNameLengthTransform)
+//                .peek(System.out::println)
+//                .sequential()
+//                .parallel()
+                .collect(Collectors.toList());
+    }
+    public List<String> stringTransform1(List<String> namesList, boolean isParallel) {
+        Stream<String> namesStream = namesList.stream();
+
+        if (isParallel)
+            namesStream.parallel();
+
+        return namesStream
                 .map(this::addNameLengthTransform)
 //                .peek(System.out::println)
 //                .sequential()
