@@ -6,6 +6,8 @@ import com.learnjava.domain.checkout.CheckoutStatus;
 import com.learnjava.util.DataSet;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.ForkJoinPool;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CheckoutServiceTest {
@@ -33,7 +35,22 @@ class CheckoutServiceTest {
 
     @Test
     void no_of_cores(){
+        //given
+
+        //when
         System.out.println("no of cores: " + Runtime.getRuntime().availableProcessors());
+
+        //then
+    }
+
+    @Test
+    void parallelism(){
+        //given
+
+        //when
+        System.out.println("parallelism: " + ForkJoinPool.getCommonPoolParallelism());
+
+        //then
     }
 
     @Test
