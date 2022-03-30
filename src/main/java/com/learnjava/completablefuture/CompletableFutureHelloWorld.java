@@ -4,7 +4,6 @@ import com.learnjava.service.HelloWorldService;
 
 import java.util.concurrent.CompletableFuture;
 
-import static com.learnjava.util.CommonUtil.delay;
 import static com.learnjava.util.LoggerUtil.log;
 
 public class CompletableFutureHelloWorld {
