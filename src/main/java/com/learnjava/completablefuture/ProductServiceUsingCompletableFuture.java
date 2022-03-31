@@ -24,18 +24,29 @@ public class ProductServiceUsingCompletableFuture {
     public Product retrieveProductDetails(String productId) {
         stopWatch.start();
 
-        CompletableFuture<ProductInfo> cfProductInfo =
-                CompletableFuture.supplyAsync(()->productInfoService.retrieveProductInfo(productId));
-        CompletableFuture<Review> cfReview =
-                CompletableFuture.supplyAsync(()->reviewService.retrieveReviews(productId));
-
-        Product product = cfProductInfo
-                .thenCombine(cfReview, (productInfo, review) -> new Product(productId, productInfo, review))
+        Product product = retrieveProductDetails_approach2(productId)
                 .join(); // block the thread
 
         stopWatch.stop();
         log("Total Time Taken : "+ stopWatch.getTime());
         stopWatchReset();
+        return product;
+    }
+
+    public CompletableFuture<Product> retrieveProductDetails_approach2(String productId) {
+//        stopWatch.start();
+
+        CompletableFuture<ProductInfo> cfProductInfo =
+                CompletableFuture.supplyAsync(()->productInfoService.retrieveProductInfo(productId));
+        CompletableFuture<Review> cfReview =
+                CompletableFuture.supplyAsync(()->reviewService.retrieveReviews(productId));
+
+        CompletableFuture<Product> product = cfProductInfo
+                .thenCombine(cfReview, (productInfo, review) -> new Product(productId, productInfo, review));
+
+//        stopWatch.stop();
+        log("Total Time Taken : "+ stopWatch.getTime());
+//        stopWatchReset();
         return product;
     }
 
