@@ -5,6 +5,8 @@ import com.learnjava.service.ProductInfoService;
 import com.learnjava.service.ReviewService;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.CompletableFuture;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -36,11 +38,16 @@ class ProductServiceUsingCompletableFutureTest {
         String productId = "ABC123";
 
         //when
-        Product product = pscf.retrieveProductDetails_approach2(productId).join();
+        CompletableFuture<Product> cfProduct = pscf.retrieveProductDetails_approach2(productId);
 
         //then
-        assertNotNull(product);
-        assertTrue(product.getProductInfo().getProductOptions().size()>0);
-        assertNotNull(product.getReview());
+        cfProduct
+                .thenAccept((product) -> {
+                    assertNotNull(product);
+                    assertTrue(product.getProductInfo().getProductOptions().size()>0);
+                    assertNotNull(product.getReview());
+                })
+                .join();
+
     }
 }
