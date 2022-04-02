@@ -27,11 +27,15 @@ public class CompletableFutureHelloWorldException {
         String hw = hello
                 .handle((res, e) -> {
                     log("Exception is: " + e.getMessage());
-                    return "";
+                    return " ";
                 })
                 .thenCombine(world, (h, w) -> h+w) // " world'"
+                .handle((res2, e2) -> {
+                    log("Exception after world is: " + e2);
+                    return "";
+                })
                 .thenCombine(hiCompletableFuture, (previous, current) -> previous + current)
-                // " world! Hi CompleatableFuture!
+                // " world! Hi CompletableFuture!
                 .thenApply(String::toUpperCase)
                 //" WORLD! HI COMPLETABLEFUTURE!"
                 .join();
