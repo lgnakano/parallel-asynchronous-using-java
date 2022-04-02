@@ -65,4 +65,26 @@ class ProductServiceUsingCompletableFutureExceptionTest {
         //then
         Assertions.assertThrows(RuntimeException.class, () -> pscf.retrieveProductDetailsWithInventory_approach2(productId));
     }
+
+    @Test
+    void retrieveProductDetailsWithInventory_retrieveInventoryFailure() {
+        // given
+        String productId = "ABC123";
+        when(pisMock.retrieveProductInfo(any())).thenCallRealMethod();
+        when(rsMock.retrieveReviews(any())).thenCallRealMethod();
+        when(isMock.retrieveInventory(any())).thenThrow(new RuntimeException("Exception occurred in Retrieve Inventory"));
+
+        //when
+        Product product = pscf.retrieveProductDetailsWithInventory_approach2(productId);
+
+        //then
+        assertNotNull(product);
+        assertTrue(product.getProductInfo().getProductOptions().size()>0);
+
+        product.getProductInfo().getProductOptions()
+                .forEach(productOption -> assertEquals(1, productOption.getInventory().getCount()));
+        assertNotNull(product.getReview());
+        assertEquals(200, product.getReview().getNoOfReviews());
+        assertEquals(4.5, product.getReview().getOverallRating());
+    }
 }

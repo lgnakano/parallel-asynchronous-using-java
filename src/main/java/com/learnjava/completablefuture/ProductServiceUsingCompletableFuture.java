@@ -128,6 +128,12 @@ public class ProductServiceUsingCompletableFuture {
                 .map(productOption ->
                         CompletableFuture.supplyAsync(
                                 ()-> inventoryService.retrieveInventory(productOption))
+                                .exceptionally((e) -> {
+                                    log("Handled the exception in retrieveInventory: " + e.getMessage());
+                                    return Inventory.builder()
+                                            .count(1)
+                                            .build();
+                                })
                         .thenApply(inventory->{
                             productOption.setInventory(inventory);
                             return productOption;
