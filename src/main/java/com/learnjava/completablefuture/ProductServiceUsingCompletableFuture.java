@@ -87,7 +87,7 @@ public class ProductServiceUsingCompletableFuture {
     }
 
     public Product retrieveProductDetailsWithInventory_approach2(String productId) {
-        stopWatch.start();
+//        stopWatch.start();
 
         CompletableFuture<ProductInfo> cfProductInfo = CompletableFuture
                 .supplyAsync(()->productInfoService.retrieveProductInfo(productId))
@@ -109,11 +109,16 @@ public class ProductServiceUsingCompletableFuture {
 
         Product product = cfProductInfo
                 .thenCombine(cfReview, (productInfo, review) -> new Product(productId, productInfo, review))
+                .whenComplete((product1, ex) -> {
+                  log("Inside WhenComplete: " + product1 + " and the exception is "
+                  + ex);
+//                  stopWatchReset();
+                })
                 .join();
 
-        stopWatch.stop();
+//        stopWatch.stop();
         log("Total Time Taken : "+ stopWatch.getTime());
-        stopWatchReset();
+//        stopWatchReset();
         return product;
     }
 
