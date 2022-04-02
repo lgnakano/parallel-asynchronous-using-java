@@ -82,4 +82,46 @@ public class CompletableFutureHelloWorldException {
         stopWatchReset();
         return hw;
     }
+    public String helloworld_3_async_calls_whenComplete(){
+        startTimer();
+
+        CompletableFuture<String> hello = CompletableFuture.supplyAsync(hws::hello);
+        CompletableFuture<String> world = CompletableFuture.supplyAsync(hws::world);
+        CompletableFuture<String> hiCompletableFuture = CompletableFuture.supplyAsync(()->{
+            delay(1000);
+            return " Hi CompletableFuture!";
+        });
+
+        String hw = hello
+                .whenComplete((res, e) -> {
+                    log("res after hello is: " + res);
+                    if (null != e) {
+                        log("Exception in whenComplete is: " + e.getMessage());
+                    }
+                })
+                .exceptionally((e) -> {
+                    log("Exception in exceptionally is: " + e.getMessage());
+                    return "";
+                })
+                .thenCombine(world, (h, w) -> h+w) // " world'"
+                .whenComplete((res, e) -> {
+                    log("res after world is: " + res);
+                    if (null != e) {
+                        log("Exception in exceptionally after world is: " + e);
+                    }
+                })
+                .exceptionally((e2) -> {
+                    log("Exception in exceptionally after world is: " + e2);
+                    return "";
+                })
+                .thenCombine(hiCompletableFuture, (previous, current) -> previous + current)
+                // " world! Hi CompletableFuture!
+                .thenApply(String::toUpperCase)
+                //" WORLD! HI COMPLETABLEFUTURE!"
+                .join();
+
+        timeTaken();
+        stopWatchReset();
+        return hw;
+    }
 }
