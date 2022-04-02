@@ -33,7 +33,7 @@ class CompletableFutureHelloWorldExceptionTest {
 
         //then
         log(result);
-        assertEquals(" HI COMPLETABLEFUTURE!", result);
+        assertEquals(" WORLD! HI COMPLETABLEFUTURE!", result);
     }
     @Test
     void helloworld_3_async_calls_handle_2() {
@@ -68,6 +68,6 @@ class CompletableFutureHelloWorldExceptionTest {
         String result = hwcfe.helloworld_3_async_calls_handle();
 
         //then
-        assertEquals(" HELLO WORLD! HI COMPLETABLEFUTURE!", result);
+        assertEquals("HELLO WORLD! HI COMPLETABLEFUTURE!", result);
     }
 }

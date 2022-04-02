@@ -26,13 +26,21 @@ public class CompletableFutureHelloWorldException {
 
         String hw = hello
                 .handle((res, e) -> {
-                    log("Exception is: " + e.getMessage());
-                    return " ";
+                    if (null != e) {
+                        log("Exception is: " + e.getMessage());
+                        return "";
+                    } else {
+                        return res;
+                    }
                 })
                 .thenCombine(world, (h, w) -> h+w) // " world'"
                 .handle((res2, e2) -> {
-                    log("Exception after world is: " + e2);
-                    return "";
+                    if (null != e2) {
+                        log("Exception after world is: " + e2);
+                        return "";
+                    } else {
+                        return res2;
+                    }
                 })
                 .thenCombine(hiCompletableFuture, (previous, current) -> previous + current)
                 // " world! Hi CompletableFuture!
