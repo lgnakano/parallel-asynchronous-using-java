@@ -35,7 +35,7 @@ public class MoviesClient {
 
         return webClient
                 .get()
-                .uri(moviesInfoUrlPath)
+                .uri(moviesInfoUrlPath, movieInfoId)
                 .retrieve()
                 .bodyToMono(MovieInfo.class)
                 .block();
@@ -54,7 +54,7 @@ public class MoviesClient {
 
         return webClient
                 .get()
-                .uri(reviewUri, movieInfoId)
+                .uri(reviewUri)
                 .retrieve()
                 .bodyToFlux(Review.class)
                 .collectList()
