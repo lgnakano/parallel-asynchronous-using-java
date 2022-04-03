@@ -72,6 +72,16 @@ class CompletableFutureHelloWorldTest {
     }
 
     @Test
+    void helloworld_3_async_calls_log() {
+        // given
+
+        //when
+
+        //then
+        assertEquals("HELLO WORLD! HI COMPLETABLEFUTURE!", cfhw.helloworld_3_async_calls_log());
+    }
+
+    @Test
     void helloworld_4_async_calls() {
         // given
 
