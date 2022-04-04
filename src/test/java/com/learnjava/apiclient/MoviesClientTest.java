@@ -5,6 +5,8 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.List;
+
 import static com.learnjava.util.CommonUtil.stopWatchReset;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -57,5 +59,70 @@ class MoviesClientTest {
         assert movie != null;
         assertEquals("Batman Begins", movie.getMovieInfo().getName());
         assert movie.getReviewList().size() == 1;
+    }
+
+    @RepeatedTest(10)
+    void retrieveMovies() {
+        CommonUtil.startTimer();
+        // given
+        var movieInfoIds = List.of(1L, 2L, 3L, 4L, 5L, 6L, 7L);
+
+        //when
+
+        var movies = moviesClient.retrieveMovies(movieInfoIds);
+        CommonUtil.timeTaken();
+        CommonUtil.stopWatchReset();
+
+        System.out.println("movie: " + movies);
+
+        //then
+        assert movies != null;
+        assert movies.size() == 7;
+        assertEquals("Batman Begins", movies.get(0).getMovieInfo().getName());
+        assert movies.get(0).getReviewList().size() == 1;
+
+    }
+
+    @RepeatedTest(10)
+    void retrieveMovies_CF() {
+
+        CommonUtil.startTimer();
+        // given
+        var movieInfoIds = List.of(1L, 2L, 3L, 4L, 5L, 6L, 7L);
+
+        //when
+
+        var movies = moviesClient.retrieveMovies_CF(movieInfoIds);
+        CommonUtil.timeTaken();
+        CommonUtil.stopWatchReset();
+
+        System.out.println("movie: " + movies);
+
+        //then
+        assert movies != null;
+        assert movies.size() == 7;
+        assertEquals("Batman Begins", movies.get(0).getMovieInfo().getName());
+        assert movies.get(0).getReviewList().size() == 1;
+    }
+    @RepeatedTest(10)
+    void retrieveMovies_CF_single_stream() {
+
+        CommonUtil.startTimer();
+        // given
+        var movieInfoIds = List.of(1L, 2L, 3L, 4L, 5L, 6L, 7L);
+
+        //when
+
+        var movies = moviesClient.retrieveMovies_CF_single_stream(movieInfoIds);
+        CommonUtil.timeTaken();
+        CommonUtil.stopWatchReset();
+
+        System.out.println("movie: " + movies);
+
+        //then
+        assert movies != null;
+        assert movies.size() == 7;
+        assertEquals("Batman Begins", movies.get(0).getMovieInfo().getName());
+        assert movies.get(0).getReviewList().size() == 1;
     }
 }
