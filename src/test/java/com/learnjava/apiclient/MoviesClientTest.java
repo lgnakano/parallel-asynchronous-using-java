@@ -125,4 +125,25 @@ class MoviesClientTest {
         assertEquals("Batman Begins", movies.get(0).getMovieInfo().getName());
         assert movies.get(0).getReviewList().size() == 1;
     }
+    @RepeatedTest(10)
+    void retrieveMovies_CF_allOf() {
+
+        CommonUtil.startTimer();
+        // given
+        var movieInfoIds = List.of(1L, 2L, 3L, 4L, 5L, 6L, 7L);
+
+        //when
+
+        var movies = moviesClient.retrieveMovies_CF_allOf(movieInfoIds);
+        CommonUtil.timeTaken();
+        CommonUtil.stopWatchReset();
+
+        System.out.println("movie: " + movies);
+
+        //then
+        assert movies != null;
+        assert movies.size() == 7;
+        assertEquals("Batman Begins", movies.get(0).getMovieInfo().getName());
+        assert movies.get(0).getReviewList().size() == 1;
+    }
 }
